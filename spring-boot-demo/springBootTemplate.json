@@ -1,0 +1,54 @@
+{
+   "kind": "BuildConfig",
+   "apiVersion": "v1",
+   "metadata": {
+      "name": "spring-boot-demo",             
+      "labels": {
+         "application": "spring-boot-demo"    
+      }
+   },
+   "spec": {
+      "source": {                     
+         "type": "Git",               
+         "git": {
+            "uri": "https://ramya.karthikeyan@innersource.accenture.com/scm/app_ap/api_gateway_app.git",  
+            "ref": "master"           
+         },
+         "contextDir":""              
+      },
+      "strategy": {                   
+         "type": "Source",           
+         "sourceStrategy": {
+            "from": {                 
+               "kind": "ImageStreamTag",
+               "namespace": "openshift",
+               "name": "jboss-eap6-openshift:6.4"
+            }
+         }
+      },
+      "output": {                     
+         "to": {
+            "kind": "ImageStreamTag",
+            "name": "spring-boot-demo:latest"
+         }
+      },
+      "triggers": [
+         {
+            "type": "GitHub",         
+            "generic": {
+               "secret": "secret"
+            }
+         },
+         {
+            "type": "Generic",        
+            "github": {
+               "secret": "secret"
+            }
+         },
+         {
+            "type": "ImageChange",    
+            "imageChange": {}
+         }
+      ]
+   }
+}
